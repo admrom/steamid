@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Extrator de SteamID</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #1b1b2f;
+      color: #eee;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      color: #00adb5;
+    }
+    input, textarea, button {
+      width: 100%;
+      max-width: 600px;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+    input, textarea {
+      background: #2d2d44;
+      color: #eee;
+    }
+    button {
+      background: #00adb5;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #009ba5;
+    }
+  </style>
+</head>
+<body>
+  <h1>Extrair SteamID</h1>
+  <input type="text" id="urlInput" placeholder="Cole o link do perfil da Steam aqui">
+  <button onclick="extrairSteamID()">Extrair SteamID</button>
+  <textarea id="resultado" rows="2" readonly placeholder="O SteamID aparecerá aqui..."></textarea>
+
+  <script>
+    async function extrairSteamID() {
+      const url = document.getElementById("urlInput").value.trim();
+      const resultado = document.getElementById("resultado");
+      resultado.value = "Carregando...";
+
+      try {
+        const response = await fetch("https://api.allorigins.win/get?url=" + encodeURIComponent(url));
+        const data = await response.json();
+        const html = data.contents;
+
+        const match = html.match(/"steamid":"(\d+)"/);
+        if (match && match[1]) {
+          resultado.value = match[1];
+        } else {
+          resultado.value = "SteamID não encontrado.";
+        }
+      } catch (error) {
+        resultado.value = "Erro ao carregar a página.";
+        console.error(error);
+      }
+    }
+  </script>
+</body>
+</html>
