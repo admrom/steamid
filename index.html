@@ -58,7 +58,7 @@
 
         const match = html.match(/"steamid":"(\d+)"/);
         if (match && match[1]) {
-          resultado.value = match[1];
+          resultado.value = "https://steamcommunity.com/profiles/" + match[1];
         } else {
           resultado.value = "SteamID não encontrado.";
         }
